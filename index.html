@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Church Money Record System</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="loginView" class="login-shell">
+    <div class="login-card">
+      <div class="brand-mark">CM</div>
+      <h1>Church Money Record System</h1>
+      <p class="muted">Secure church financial records</p>
+      <form id="loginForm">
+        <label>Email<input id="email" type="email" required autocomplete="email"></label>
+        <label>Password<input id="password" type="password" required autocomplete="current-password"></label>
+        <button class="primary" type="submit">Sign in</button>
+        <p id="loginError" class="error"></p>
+      </form>
+    </div>
+  </div>
+
+  <div id="appView" class="app hidden">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-mark">CM</div><div><strong>Church Money</strong><span>Record System</span></div></div>
+      <nav>
+        <button data-section="dashboard" class="nav active">Dashboard</button>
+        <button data-section="income" class="nav">Income</button>
+        <button data-section="expenses" class="nav">Expenses</button>
+        <button data-section="funds" class="nav">Funds</button>
+        <button data-section="reports" class="nav">Reports</button>
+        <button data-section="users" class="nav admin-only">Users</button>
+        <button data-section="audit" class="nav audit-only">Audit Log</button>
+      </nav>
+      <button id="logoutBtn" class="logout">Sign out</button>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div><h2 id="pageTitle">Dashboard</h2><p id="userInfo" class="muted"></p></div>
+        <button id="mobileMenu" class="menu">☰</button>
+      </header>
+
+      <section id="dashboard" class="section active">
+        <div class="cards">
+          <div class="card"><span>Total Income</span><strong id="totalIncome">$0.00</strong></div>
+          <div class="card"><span>Total Expenses</span><strong id="totalExpenses">$0.00</strong></div>
+          <div class="card"><span>Current Balance</span><strong id="balance">$0.00</strong></div>
+          <div class="card"><span>Active Funds</span><strong id="fundCount">0</strong></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h3>Recent Transactions</h3><button class="secondary" id="refreshBtn">Refresh</button></div>
+          <div class="table-wrap"><table><thead><tr><th>Date</th><th>Type</th><th>Fund</th><th>Amount</th><th>Description</th></tr></thead><tbody id="recentTable"></tbody></table></div>
+        </div>
+      </section>
+
+      <section id="income" class="section">
+        <div class="panel">
+          <div class="panel-head"><h3>Record Income</h3></div>
+          <form id="incomeForm" class="form-grid">
+            <label>Date<input id="incomeDate" type="date" required></label>
+            <label>Fund<select id="incomeFund" required></select></label>
+            <label>Amount<input id="incomeAmount" type="number" min="0.01" step="0.01" required></label>
+            <label>Category<input id="incomeCategory" required placeholder="Offering, tithe, donation..."></label>
+            <label>Received From<input id="incomeFrom" placeholder="Person / group"></label>
+            <label>Payment Method<select id="incomeMethod"><option>Cash</option><option>Bank</option><option>Mobile Money</option><option>Other</option></select></label>
+            <label class="wide">Receipt Number<input id="incomeReceipt"></label>
+            <label class="wide">Description<textarea id="incomeDescription"></textarea></label>
+            <button class="primary" type="submit">Save Income</button>
+          </form>
+          <p id="incomeMsg" class="message"></p>
+        </div>
+      </section>
+
+      <section id="expenses" class="section">
+        <div class="panel">
+          <div class="panel-head"><h3>Record Expense</h3></div>
+          <form id="expenseForm" class="form-grid">
+            <label>Date<input id="expenseDate" type="date" required></label>
+            <label>Fund<select id="expenseFund" required></select></label>
+            <label>Amount<input id="expenseAmount" type="number" min="0.01" step="0.01" required></label>
+            <label>Category<input id="expenseCategory" required placeholder="Transport, electricity, supplies..."></label>
+            <label>Paid To<input id="expenseTo" placeholder="Person / vendor"></label>
+            <label>Payment Method<select id="expenseMethod"><option>Cash</option><option>Bank</option><option>Mobile Money</option><option>Other</option></select></label>
+            <label class="wide">Receipt Number<input id="expenseReceipt"></label>
+            <label class="wide">Description<textarea id="expenseDescription"></textarea></label>
+            <button class="primary" type="submit">Save Expense</button>
+          </form>
+          <p id="expenseMsg" class="message"></p>
+        </div>
+      </section>
+
+      <section id="funds" class="section">
+        <div class="panel"><div class="panel-head"><h3>Church Funds</h3></div><div id="fundGrid" class="fund-grid"></div></div>
+      </section>
+
+      <section id="reports" class="section">
+        <div class="panel">
+          <div class="panel-head"><h3>Financial Report</h3><button class="secondary" id="reportBtn">Generate</button></div>
+          <div class="filters">
+            <label>From<input id="reportFrom" type="date"></label>
+            <label>To<input id="reportTo" type="date"></label>
+          </div>
+          <div id="reportOutput" class="report-output"></div>
+        </div>
+      </section>
+
+      <section id="users" class="section admin-only"><div class="panel"><h3>User Roles</h3><p class="muted">User role management is restricted to administrators and can be extended here.</p></div></section>
+      <section id="audit" class="section audit-only"><div class="panel"><h3>Audit Log</h3><div class="table-wrap"><table><thead><tr><th>Date</th><th>Action</th><th>Table</th><th>Record</th></tr></thead><tbody id="auditTable"></tbody></table></div></div></section>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="app.js"></script>
+</body>
+</html>
